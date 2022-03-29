@@ -3,51 +3,58 @@ using System.Collections.Generic;
 using Raylib_cs;
 
 
-public class snowFlakes
+public class Snow
 {
-    List<Rectangle> snowFlakeList = new List<Rectangle>();
-    List<float> snowSpeedList = new List<float>();
-    Random yRand = new Random();
-    Random xRand = new Random();
-    Random ranNum = new Random();
-
-    public snowFlakes(int numOfFlakes, int _sizeVariety, int _speedVariety)
+    List<Rectangle> snowFlakes = new List<Rectangle>();
+    List<float> snowSpeeds = new List<float>();
+    Random yRand = new Random(1080);
+    Random xRand = new Random(1920);
+    Random ranNum = new Random(100);
+    public Snow(int sizeVariety, int speedVariety, int scale)
     {
-        for (int i = 0; i < numOfFlakes; i++)
+        for (int i = 0; i < 1000; i++)
         {
-            int size = ranNum.Next(1, Convert.ToInt32(_sizeVariety) + 10);
-            int speed = size * ranNum.Next(-10, Convert.ToInt32(_speedVariety) + 10);
+            int size = ranNum.Next(5, Convert.ToInt32(sizeVariety) + 5);
+            int speed = size + ranNum.Next(5, Convert.ToInt32(speedVariety) + 5);
+
+            size += scale;
 
             int x = xRand.Next(Raylib.GetScreenWidth());
             int y = yRand.Next(Raylib.GetScreenHeight());
 
-            snowFlakeList.Add(new Rectangle(x, y, size, size));
-            snowSpeedList.Add(speed);
+            snowFlakes.Add(new Rectangle(x, y, size, size));
+            snowSpeeds.Add(speed);
         }
     }
 
-    public void Draw(int _sizeVariety, int _speedVariety)
+    public void Draw(int sizeVariety, int speedVariety, int scale)
     {
-        for (int i = 0; i < snowFlakeList.Count; i++)
+        for (int i = 0; i < snowFlakes.Count; i++)
         {
-            Rectangle flake = snowFlakeList[i];
+            Rectangle _snowFlakes = snowFlakes[i];
 
-            snowSpeedList[i] = flake.width + ranNum.Next(0, Convert.ToInt32(_speedVariety));
-            flake.height = flake.width;
-            flake.y += snowSpeedList[i];
-            snowFlakeList[i] = flake;
-
-            if (flake.y > Raylib.GetScreenHeight())
+            if (_snowFlakes.y > Raylib.GetScreenHeight())
             {
+                _snowFlakes = snowFlakes[i];
 
-                flake = snowFlakeList[i];
-                flake.width = ranNum.Next(1, Convert.ToInt32(_sizeVariety) + 10);
-                flake.x = xRand.Next(-Convert.ToInt32(flake.width), Raylib.GetScreenWidth());
-                flake.y = -yRand.Next(Raylib.GetScreenHeight());
-                snowFlakeList[i] = flake;
-                Raylib.DrawRectangleRec(snowFlakeList[i], Color.WHITE);
+                _snowFlakes.width = ranNum.Next(5, Convert.ToInt32(sizeVariety) + 5);
+                snowSpeeds[i] = _snowFlakes.width + ranNum.Next(1, Convert.ToInt32(speedVariety) + 1) - ranNum.Next(1, Convert.ToInt32(speedVariety) + 1);
+
+                _snowFlakes.height = _snowFlakes.width;
+                _snowFlakes.x = xRand.Next(Raylib.GetScreenWidth() + Convert.ToInt32(_snowFlakes.width));
+                _snowFlakes.y = -yRand.Next(Raylib.GetScreenHeight());
+
+                snowFlakes[i] = _snowFlakes;
             }
-            Raylib.DrawRectangleRec(snowFlakeList[i], Color.WHITE);
+
+            _snowFlakes.y += snowSpeeds[i];
+            _snowFlakes.width += scale;
+            _snowFlakes.x -= scale / 2;
+            snowFlakes[i] = _snowFlakes;
+
+            Raylib.DrawRectangleRec(snowFlakes[i], Color.WHITE);
         }
+
+
     }
 }

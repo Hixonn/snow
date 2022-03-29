@@ -10,16 +10,16 @@ namespace test
         {
             int globalIndent = 10;
 
-            Raylib.InitWindow(Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), "balls");
+            Raylib.InitWindow(1270, 720, "balls");
             Raylib.SetTargetFPS(60);
-            Raylib.ToggleFullscreen();
 
             List<Slider> sliderList = new List<Slider>();
 
-            sliderList.Add(new Slider(0, 5, Convert.ToInt32((Raylib.GetScreenWidth() / 7) * 6), 100, 100, globalIndent));
-            sliderList.Add(new Slider(0, 120, sliderList[0].Bar.width, 100, 30, globalIndent, 0));
+            sliderList.Add(new Slider(10, 10, Convert.ToInt32((Raylib.GetScreenWidth() / 7) * 6), 100, 100, globalIndent));
+            sliderList.Add(new Slider(10, 120, sliderList[0].Bar.width, 50, 5, globalIndent, 0));
+            sliderList.Add(new Slider(10, 230, sliderList[0].Bar.width, 50, 5, globalIndent, 0));
 
-            snowFlakes snow = new snowFlakes(1000, sliderList[0].SliderValue, sliderList[1].SliderValue);
+            Snow snow = new Snow(sliderList[0].SliderValue, sliderList[1].SliderValue, sliderList[2].SliderValue);
 
             while (Raylib.WindowShouldClose() == false)
 
@@ -34,7 +34,7 @@ namespace test
                     sliderList[i].Draw();
                 }
 
-                snow.Draw(sliderList[0].SliderValue, sliderList[1].SliderValue);
+                snow.Draw(sliderList[0].SliderValue, sliderList[1].SliderValue, sliderList[2].SliderValue);
 
                 Raylib.EndDrawing();
 
