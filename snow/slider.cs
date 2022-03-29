@@ -11,7 +11,6 @@ public class Slider
     int startAt;
     Color nobClr;
     Color barClr;
-    int value;
     public Slider(float barX, float barY, float barW, float barH, int valueRange, int indent, int start = 0, Color? nobColor = null, Color? barColor = null, bool reverse = false)
     {
 
@@ -35,7 +34,7 @@ public class Slider
         bar = new Rectangle(barX, barY, barW, barH);
         nob = new Rectangle(bar.x + nobIndent, bar.y + nobIndent, bar.height - nobIndent * 2, bar.height - nobIndent * 2);
         nob.x += Convertion * startAt;
-        Console.WriteLine($"{ (bar.width - bar.x - nob.width - nobIndent * 2) / sliderRange} times {start} is {((bar.width - bar.x - nob.width - nobIndent * 2) / sliderRange) * start}");
+        
     }
 
     public void Update()

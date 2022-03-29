@@ -8,6 +8,7 @@ namespace test
     {
         static void Main(string[] args)
         {
+            
             int globalIndent = 10;
 
             Raylib.InitWindow(1270, 720, "balls");
@@ -19,7 +20,7 @@ namespace test
             sliderList.Add(new Slider(10, 120, sliderList[0].Bar.width, 50, 5, globalIndent, 0));
             sliderList.Add(new Slider(10, 230, sliderList[0].Bar.width, 50, 5, globalIndent, 0));
 
-            Snow snow = new Snow(sliderList[0].SliderValue, sliderList[1].SliderValue, sliderList[2].SliderValue);
+            Snow snow = new Snow(sliderList[0].SliderValue, sliderList[1].SliderValue, sliderList[2].SliderValue * 2);
 
             while (Raylib.WindowShouldClose() == false)
 
@@ -34,8 +35,7 @@ namespace test
                     sliderList[i].Draw();
                 }
 
-                snow.Draw(sliderList[0].SliderValue, sliderList[1].SliderValue, sliderList[2].SliderValue);
-
+                snow.Draw(sliderList[0].SliderValue, sliderList[1].SliderValue, sliderList[2].SliderValue * 2);
                 Raylib.EndDrawing();
 
             }
