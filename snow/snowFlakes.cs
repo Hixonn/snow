@@ -10,7 +10,7 @@ public class Snow
     Random yRand = new Random(1080);
     Random xRand = new Random(1920);
     Random ranNum = new Random(100);
-    int textY = -30;
+    int textY = -250;
     int textX = Raylib.GetScreenWidth() / 2;
 
 
@@ -20,7 +20,7 @@ public class Snow
 
         Raylib.DrawText("SNOW", textX - 10, textY, 30, Color.RED);
 
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 3000; i++)
         {
             int size = ranNum.Next(10, Convert.ToInt32(sizeVariety) + 10);
             int speed = size + ranNum.Next(5, Convert.ToInt32(speedVariety) + 5);
@@ -58,21 +58,21 @@ public class Snow
             }
 
 
-            _snowFlakes.y += snowSpeeds[i];
+            _snowFlakes.y += snowSpeeds[i] / 2;
             _snowFlakes.width += scale;
             _snowFlakes.x -= scale / 2;
 
+            float mouseDiff = 100;
 
-            float diff = _snowFlakes.x - Raylib.GetMouseX();
+            float diffX = _snowFlakes.x - (Raylib.GetMouseX() - _snowFlakes.width / 2);
+            float diffY = _snowFlakes.y - Raylib.GetMouseY();
 
-            if (MathF.Abs(diff) < 100)
+
+            if (MathF.Abs(diffX) < mouseDiff + (_snowFlakes.width * 3) && diffY > -(mouseDiff / 2) && diffY < mouseDiff)
             {
-                int t = diff > 0 ? 1 : -1;
+                int tX = diffX >= 0 ? 1 : -1;
 
-                if (_snowFlakes.x > Raylib.GetMouseX() - 20 || _snowFlakes.x < Raylib.GetMouseX() + 20)
-                {
-                    _snowFlakes.x += Convert.ToInt32((5 / (MathF.Abs(diff)) * t));
-                }
+                _snowFlakes.x += Convert.ToSingle((3 * _snowFlakes.width) / MathF.Abs(diffX)) * tX;
             }
 
             snowFlakes[i] = _snowFlakes;
