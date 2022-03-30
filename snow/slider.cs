@@ -103,6 +103,8 @@ public class Slider
         Raylib.DrawRectangleRec(bar, barClr);
         Raylib.DrawRectangleRec(nob, nobClr);
         Raylib.DrawText($"{Convert.ToInt32((nob.x - nobIndent - bar.x) / (Convertion))}", Convert.ToInt32(bar.x + bar.width + nobIndent + 10), Convert.ToInt32(bar.y + 10), Convert.ToInt32(bar.height), Color.BLACK);
+        Raylib.DrawText($"{Convert.ToInt32((nob.x - nobIndent - bar.x) / (Convertion))}", Convert.ToInt32(bar.x + bar.width + nobIndent + 10), Convert.ToInt32(bar.y + 5), Convert.ToInt32(bar.height), Color.BLACK);
+        Raylib.DrawText($"{Convert.ToInt32((nob.x - nobIndent - bar.x) / (Convertion))}", Convert.ToInt32(bar.x + bar.width + nobIndent + 5), Convert.ToInt32(bar.y + 10), Convert.ToInt32(bar.height), Color.BLACK);
         Raylib.DrawText($"{Convert.ToInt32((nob.x - nobIndent - bar.x) / (Convertion))}", Convert.ToInt32(bar.x + bar.width + nobIndent + 5), Convert.ToInt32(bar.y + 5), Convert.ToInt32(bar.height), Color.WHITE);
 
     }
