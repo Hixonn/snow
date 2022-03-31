@@ -11,9 +11,12 @@ public class Slider
     int startAt;
     Color nobClr;
     Color barClr;
+    bool introCompleted = false;
+    double a = 1.05;
+    float sliderX;
     public Slider(float barX, float barY, float barW, float barH, int valueRange, int indent, int start = 0, Color? nobColor = null, Color? barColor = null, bool reverse = false)
     {
-
+        sliderX = barX;
         if (start > valueRange)
         {
             startAt = valueRange;
@@ -31,7 +34,8 @@ public class Slider
         barClr = barColor ?? Color.BLACK;
         sliderRange = valueRange;
         nobIndent = indent;
-        bar = new Rectangle(barX, barY, barW, barH);
+
+        bar = new Rectangle(barX + Raylib.GetScreenWidth(), barY, barW, barH);
         nob = new Rectangle(bar.x + nobIndent, bar.y + nobIndent, bar.height - nobIndent * 2, bar.height - nobIndent * 2);
         nob.x += Convertion * startAt;
 
@@ -39,15 +43,29 @@ public class Slider
 
     public void Update()
     {
+        if (introCompleted == false)
+        {
+            if (bar.x > sliderX)
+            {
+                bar.x -= Convert.ToSingle(10 * a);
+                nob.x -= Convert.ToSingle(10 * a);
+                a += 0.5;
+            }
+            else
+            {
+                bar.x = sliderX;
+                nob.x = bar.x + nobIndent + Convertion * startAt;
+                introCompleted = true;
+            }
+        }
 
-        if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON) == true && Raylib.GetMouseX() > bar.x && Raylib.GetMouseX() < bar.width + bar.x && Raylib.GetMouseY() > bar.y && Raylib.GetMouseY() < bar.height + bar.y)
+        if (introCompleted == true && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON) == true && Raylib.GetMouseX() > bar.x && Raylib.GetMouseX() < bar.width + bar.x && Raylib.GetMouseY() > bar.y && Raylib.GetMouseY() < bar.height + bar.y)
         {
             ignoreY = true;
         }
         if (ignoreY == true)
         {
             NobX = Raylib.GetMouseX();
-
         }
         if (Raylib.IsMouseButtonUp(MouseButton.MOUSE_LEFT_BUTTON) == true)
         {
@@ -56,7 +74,9 @@ public class Slider
     }
 
 
-    public Rectangle Bar { get { return bar; } set { } }
+
+
+    public Rectangle Bar { get { return bar; } set { bar = value; } }
     public Rectangle Nob { get { return nob; } set { } }
     public int GetSliderRange { get { return sliderRange; } }
     public float NobX

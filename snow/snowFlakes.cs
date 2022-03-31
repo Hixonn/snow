@@ -15,14 +15,14 @@ public class Snow
 
 
 
-    public Snow(int sizeVariety, int scaleY, int scaleX)
+    public Snow(int sizeVariety, int scaleY, int scaleX, int numOfFlakes)
     {
 
         Raylib.DrawText("SNOW", textX - 10, textY, 30, Color.RED);
 
-        for (int i = 0; i < 5000; i++)
+        for (int i = 0; i < numOfFlakes; i++)
         {
-            int size = Convert.ToInt32(i / 500 * sizeVariety) + 5;
+            int size = Convert.ToInt32(i / 500 * sizeVariety * sizeVariety / 20) + 2;
             int speed = size;
 
             size += scaleX;
@@ -33,12 +33,19 @@ public class Snow
             snowFlakes.Add(new Rectangle(x, y, size, size));
             snowSpeeds.Add(speed);
         }
-
-        Raylib.DrawText("SNOW", textX - 10, textY, 30, Color.BLACK);
     }
 
     public void Draw(int sizeVariety, int scaleY, int scaleX)
     {
+        textY += 10;
+        int textSize = 200;
+        int textXOffset = (textSize / 7) * 10;
+        Raylib.DrawText("SNOW", textX - textXOffset - 2, textY, textSize, Color.BLACK);
+        Raylib.DrawText("SNOW", textX - textXOffset + 2, textY, textSize, Color.BLACK);
+        Raylib.DrawText("SNOW", textX - textXOffset - 2, textY - 2, textSize, Color.BLACK);
+        Raylib.DrawText("SNOW", textX - textXOffset + 2, textY + 2, textSize, Color.BLACK);
+        Raylib.DrawText("SNOW", textX - textXOffset, textY, textSize, Color.WHITE);
+
         for (int i = 0; i < snowFlakes.Count; i++)
         {
             Rectangle _snowFlakes = snowFlakes[i];
@@ -47,7 +54,7 @@ public class Snow
             {
                 _snowFlakes = snowFlakes[i];
 
-                _snowFlakes.width = Convert.ToInt32(i / 500 * sizeVariety / 5) + 5;
+                _snowFlakes.width = Convert.ToInt32(i / 500 * sizeVariety * sizeVariety / 100) + 10;
                 snowSpeeds[i] = _snowFlakes.width;
 
                 _snowFlakes.height = _snowFlakes.width;
@@ -62,17 +69,17 @@ public class Snow
             _snowFlakes.width += scaleX;
             _snowFlakes.x -= scaleX / 2;
 
-            float mouseDiff = 100;
+            float mouseDiff = 5;
 
             float diffX = _snowFlakes.x - Raylib.GetMouseX();
             float diffY = _snowFlakes.y - Raylib.GetMouseY() - mouseDiff;
 
 
-            if (MathF.Abs(diffX) - (_snowFlakes.width / 2) * (_snowFlakes.width / 2) < mouseDiff && diffY > -mouseDiff && diffY < 1)
+            if (MathF.Abs(diffX) - ((_snowFlakes.width / 2) * (_snowFlakes.width / 2) - (100 * scaleX)) < mouseDiff && diffY > -mouseDiff - (((_snowFlakes.width * _snowFlakes.width) - (100 * scaleX)) / 10) && diffY < 1)
             {
                 int tX = diffX >= 0 ? 1 : -1;
 
-                _snowFlakes.x += (Convert.ToSingle((MathF.Abs(diffY - mouseDiff) + 500) / (MathF.Abs(diffX * 20) + mouseDiff)) * tX * ((_snowFlakes.width * _snowFlakes.width) / 10));
+                _snowFlakes.x += (Convert.ToSingle((MathF.Abs(diffY - mouseDiff) + (300 / diffX) + scaleY) / (MathF.Abs(diffX * scaleY + (_snowFlakes.width * (scaleX * scaleX)) + mouseDiff)) * tX * (_snowFlakes.width * _snowFlakes.width) / 5));
             }
 
 
@@ -91,8 +98,5 @@ public class Snow
             Raylib.DrawRectangleRec(snowFlakesBG[i], Color.BLACK);
             Raylib.DrawRectangleRec(snowFlakes[i], Color.WHITE);
         }
-        textY += 10;
-        Raylib.DrawText("SNOW", textX - 140, textY, 100, Color.WHITE);
-
     }
 }
