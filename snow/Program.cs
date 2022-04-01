@@ -11,8 +11,9 @@ namespace test
 
             int globalIndent = 10;
 
-            Raylib.InitWindow(1270, 720, "Snow");
+            Raylib.InitWindow(1920, 1080, "Snow");
             Raylib.SetTargetFPS(120);
+            Raylib.ToggleFullscreen();
 
             List<Slider> sliderList = new List<Slider>();
 
